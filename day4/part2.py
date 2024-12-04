@@ -1,33 +1,42 @@
-def count_xmas_x_patterns(grid):
+def count_xmas_occurrences(grid, word="MAS"):
     rows = len(grid)
     cols = len(grid[0])
+    word_len = len(word)
     count = 0
 
-    # Helper function to check if a specific pattern matches
-    def matches_pattern(x, y, pattern):
-        for dx, row_pattern in enumerate(pattern):
-            for dy, char in enumerate(row_pattern):
-                nx, ny = x + dx, y + dy
-                if 0 <= nx < rows and 0 <= ny < cols:
-                    if char != '.' and grid[nx][ny] != char:
-                        return False
-                else:
-                    return False
+    # Helper function to check a direction
+    def search(x, y, dx, dy):
+        for i in range(word_len):
+            if not (0 <= x + i * dx < rows and 0 <= y + i * dy < cols):
+                return False
+            if grid[x + i * dx][y + i * dy] != word[i]:
+                return False
         return True
 
-    # Define the two possible "X-MAS" patterns
-    patterns = [
-        ["M.S", ".A.", "M.S"],  # MAS forward
-        ["S.M", ".A.", "S.M"],  # SAM reverse
-    ]
-
-    # Iterate over all possible starting points for 3x3 sections
-    for x in range(rows - 2):  # Ensure space for 3 rows
-        for y in range(cols - 2):  # Ensure space for 3 columns
-            for pattern in patterns:
-                if matches_pattern(x, y, pattern):
-                    count += 1
-
+    # Iterate through all grid positions
+    for x in range(rows):
+      for y in range(cols):
+        # Check all 8 directions: right, left, down, up, and diagonals
+        directions_right = [
+          (1, 1),  # diagonal down-right
+          (-1, 1),  # diagonal up-right
+        ]
+        directions_left = [
+          (1, -1),  # diagonal down-left
+          (-1, -1), # diagonal up-left
+        ]
+        i = 0 
+        
+        for dx, dy in directions_right:
+          if search(x, y, dx, dy):
+            for dx2, dy2 in directions_left:
+              offx = dx - dx2
+              offy = dy - dy2
+              print(offx, offy)
+              if search(x + offx, y + offy, dx, dy):
+                count += 1
+                
+          i +=1
     return count
 
 
@@ -51,5 +60,5 @@ grid = [
     "M.M.M.M.M."
 ] 
 # Count occurrences of "X-MAS" pattern
-result = count_xmas_x_patterns(grid)
+result = count_xmas_occurrences(grid)
 print(f"Total 'X-MAS' patterns: {result}")
