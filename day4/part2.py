@@ -19,11 +19,13 @@ def count_xmas_occurrences(grid, word="MAS"):
         # Check all 8 directions: right, left, down, up, and diagonals
         directions_right = [
           (1, 1),  # diagonal down-right
-          (-1, 1),  # diagonal up-right
+          (-1, -1), # diagonal up-left
+          
         ]
         directions_left = [
           (1, -1),  # diagonal down-left
-          (-1, -1), # diagonal up-left
+          (-1, 1),  # diagonal up-right
+          
         ]
         i = 0 
         
@@ -32,8 +34,10 @@ def count_xmas_occurrences(grid, word="MAS"):
             for dx2, dy2 in directions_left:
               offx = dx - dx2
               offy = dy - dy2
-              print(offx, offy)
-              if search(x + offx, y + offy, dx, dy):
+              print("off",offx, offy)
+              
+              if search(x + offx, y + offy, dx2, dy2):
+                print("here",x,y)
                 count += 1
                 
           i +=1
@@ -54,11 +58,15 @@ grid = [
     "MAMMMXMMMM",
     "MXMXAXMASX",
 ] 
-grid = [
-    "S.S.S.S.S.",
-    ".A.A.A.A..",
-    "M.M.M.M.M."
-] 
+# grid = [
+#     "S.S.S.S.S.",
+#     ".A.A.A.A..",
+#     "M.M.M.M.M."
+# ] 
 # Count occurrences of "X-MAS" pattern
+with open('day4/input.txt', 'r') as file:
+    data = file.read().strip()
+    
+grid = data.split("\n")
 result = count_xmas_occurrences(grid)
 print(f"Total 'X-MAS' patterns: {result}")
