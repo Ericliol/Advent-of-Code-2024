@@ -85,5 +85,5 @@ with open('day11/input.txt', 'r') as file:
 # Number of blinks
 num_blinks = 25
 
-# print("Part 1:", part_1(initial_stones, 25))
+print("Part 1:", part_1(initial_stones, 25))
 print("Part 2:", part_2(initial_stones, 75))
